@@ -33,6 +33,7 @@ jobs:
           python3 xnuloader/mkpayload.py -o ../payload.bin \
             kernel=prebuilt/hakios-kernel \
             ramdisk=prebuilt/userland/hello \
+            loader.efi=xnuloader/loader.efi \
             --cmdline "cpus=1"
 
       - name: Rebuild BootShim for surya addresses
