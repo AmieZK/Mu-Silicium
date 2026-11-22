@@ -41,7 +41,7 @@ jobs:
             ramdisk=prebuilt/userland/hello \
             loader.efi=xnuloader/loader.efi \
             --usb \
-            --cmdline "cpus=1"
+            --cmdline "cpus=1 root_apfs=ufs_userdata ufs=2 ufs_native=1"
 
       - name: Rebuild BootShim for surya addresses
         run: |
