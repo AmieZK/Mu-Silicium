@@ -27,6 +27,12 @@ jobs:
       - name: Build UEFI for surya
         run: bash ./build_active_devices.sh -r RELEASE
 
+      - name: Fetch real iPhone X loader
+        run: |
+          curl -sSL -o hakios/xnuloader/loader.efi \
+            https://raw.githubusercontent.com/AmieZK/hakios-xnu-kernel/loader-efi/loader.efi
+          ls -l hakios/xnuloader/loader.efi
+
       - name: Build XNUP payload
         run: |
           cd hakios
