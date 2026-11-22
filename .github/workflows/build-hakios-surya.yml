@@ -40,6 +40,7 @@ jobs:
             kernel=prebuilt/hakios-kernel \
             ramdisk=prebuilt/userland/hello \
             loader.efi=xnuloader/loader.efi \
+            --usb \
             --cmdline "cpus=1"
 
       - name: Rebuild BootShim for surya addresses
