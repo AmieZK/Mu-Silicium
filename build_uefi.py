@@ -193,7 +193,8 @@ def compile_boot_shim (boot_shim_config: dict, fd_config: dict) -> bool:
         "make",
         f"REQUIRES_KERNEL_HEADER={int (requires_kernel_header)}",
         f"FD_BASE={fd_base}",
-        f"FD_SIZE={fd_size}"
+        f"FD_SIZE={fd_size}",
+        f"PAYLOAD_BASE={hex(boot_shim_config.get ('payload_base', 0xF0000000))}"
     ]
 
     # Compile Boot Shim

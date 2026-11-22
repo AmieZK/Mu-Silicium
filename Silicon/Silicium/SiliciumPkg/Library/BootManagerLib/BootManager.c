@@ -22,6 +22,7 @@
 #include <Configuration/BootDevices.h>
 
 #include "BootManager.h"
+#include "XnuLoader.h"
 
 //
 // Global Variables
@@ -49,7 +50,6 @@ PlatformBootManagerBeforeConsole ()
 
   // Register Console Variables
   EfiBootManagerUpdateConsoleVariable (ConIn,  (EFI_DEVICE_PATH_PROTOCOL *)&KeypadDevicePath,  NULL);
-  EfiBootManagerUpdateConsoleVariable (ConIn,  (EFI_DEVICE_PATH_PROTOCOL *)&UsbKeyboardDevicePath, NULL);
   EfiBootManagerUpdateConsoleVariable (ConOut, (EFI_DEVICE_PATH_PROTOCOL *)&DisplayDevicePath, NULL);
   EfiBootManagerUpdateConsoleVariable (ErrOut, (EFI_DEVICE_PATH_PROTOCOL *)&DisplayDevicePath, NULL);
 
@@ -203,6 +203,9 @@ EFIAPI
 PlatformBootManagerUnableToBoot ()
 {
   EFI_STATUS Status;
+
+  // Nothing else to boot: hand over to the XNU loader (does not return)
+  XnuLoaderMain ();
 
   // Execute Secondary Unable To Boot
   DeviceBootManagerUnableToBoot ();

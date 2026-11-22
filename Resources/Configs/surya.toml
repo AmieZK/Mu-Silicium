@@ -3,6 +3,7 @@
 #
 [boot_shim]
 requires_kernel_header = true
+payload_base = 0xF0000000
 
 #
 # UEFI FD Configs
