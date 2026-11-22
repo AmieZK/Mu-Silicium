@@ -43,7 +43,7 @@ jobs:
           cd hakios
           python3 xnuloader/mkpayload.py -o ../payload.bin \
             kernel=prebuilt/hakios-kernel \
-            ramdisk=root.apfs \
+            ramdisk=../root.apfs \
             loader.efi=xnuloader/loader.efi \
             --usb \
             --cmdline "cpus=1 root_apfs=ufs_userdata ufs=2 ufs_native=1"
@@ -67,5 +67,6 @@ jobs:
           git add -f haki-surya.img || true
           git commit -m "HakiOS UEFI surya image" || true
           git push -f origin haki-surya-img
+
 
 
