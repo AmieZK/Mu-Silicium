@@ -1,0 +1,50 @@
+﻿name: Build HakiOS UEFI image for surya
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hakios-surya
+
+      - name: Checkout HakiOS kernel (prebuilt loader and kernel)
+        uses: actions/checkout@v4
+        with:
+          repository: AmieZK/hakios-xnu-kernel
+          ref: main
+          path: hakios
+
+      - name: Install build environment
+        run: bash ./setup_env.sh -p apt
+
+      - name: Build UEFI for surya
+        run: bash ./build_active_devices.sh -r RELEASE
+
+      - name: Build XNUP payload
+        run: |
+          cd hakios
+          python3 xnuloader/mkpayload.py -o ../payload.bin \
+            kernel=prebuilt/hakios-kernel \
+            ramdisk=prebuilt/userland/hello \
+            --cmdline "cpus=1"
+
+      - name: Pack fastboot image
+        run: python3 pack-surya.py -p payload.bin -o haki-surya.img
+
+      - name: Publish image
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan haki-surya-img
+          cp haki-surya.img ./haki-surya.img || true
+          git add -f haki-surya.img || true
+          git commit -m "HakiOS UEFI surya image" || true
+          git push -f origin haki-surya-img
