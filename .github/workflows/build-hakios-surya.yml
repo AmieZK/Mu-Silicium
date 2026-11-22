@@ -1,4 +1,4 @@
-name: Build HakiOS UEFI image for surya
+﻿name: Build HakiOS UEFI image for surya
 
 on:
   workflow_dispatch:
@@ -34,6 +34,12 @@ jobs:
             kernel=prebuilt/hakios-kernel \
             ramdisk=prebuilt/userland/hello \
             --cmdline "cpus=1"
+
+      - name: Rebuild BootShim for surya addresses
+        run: |
+          rm -f BootShim/BootShim.elf BootShim/BootShim.bin
+          make -C BootShim REQUIRES_KERNEL_HEADER=1 \
+            FD_BASE=0x9FC00000 FD_SIZE=0x300000 PAYLOAD_BASE=0xF0000000
 
       - name: Pack fastboot image
         run: python3 pack-surya.py -p payload.bin -o haki-surya.img
